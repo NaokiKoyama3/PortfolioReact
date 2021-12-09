@@ -2,13 +2,15 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import 'antd/dist/antd.css';
 import './index.css';
-import { Layout, Menu } from 'antd';
+import { Layout, Menu, Button } from 'antd';
 import reportWebVitals from './reportWebVitals';
 import {
   IdcardOutlined,
   DeploymentUnitOutlined,
   MonitorOutlined,
-  ToolOutlined
+  ToolOutlined,
+  MenuUnfoldOutlined,
+  MenuFoldOutlined,
 } from '@ant-design/icons';
 
 const { Header, Content, Footer, Sider } = Layout;
@@ -19,23 +21,26 @@ class SiderDemo extends React.Component {
     collapsed: false,
   };
 
-  onCollapse = collapsed => {
-    console.log(collapsed);
-    this.setState({ collapsed });
+  toggleCollapsed = () => {
+    this.setState({
+      collapsed: !this.state.collapsed,
+    });
   };
 
   render() {
-    const { collapsed } = this.state;
     return (    
       <Layout>
         <Header>
           <Menu theme='dark' >
-            <div style={{textAlign:"center", color:"white"}}> Portfolio </div>
+            <div style={{textAlign:"center", color:"white", fontWeight:'bolder'}}> Portfolio </div>
           </Menu>
         </Header>
         <Layout>
-          <Sider collapsible collapsed={collapsed} onCollapse={this.onCollapse}>
-            <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
+          <Sider>
+            <Button type="primary" onClick={this.toggleCollapsed} style={{ marginBottom: 16 }}>
+              {React.createElement(this.state.collapsed ? MenuUnfoldOutlined : MenuFoldOutlined)}
+            </Button>
+            <Menu theme="dark" defaultSelectedKeys={['1']} defaultOpenKeys={['sub1']} mode="inline" inlineCollapsed={this.state.collapsed}>
               <Menu.Item key="about" icon={<IdcardOutlined />}> Qui suis-je ? </Menu.Item>
               <SubMenu key="ppe" icon={<DeploymentUnitOutlined />} title="PPE">
                 <Menu.Item key="ppe1"> PPE1 </Menu.Item>
@@ -49,7 +54,7 @@ class SiderDemo extends React.Component {
               <Menu.Item key="skill" icon={<ToolOutlined />}> Compétences </Menu.Item>
             </Menu>
           </Sider>
-          <Content style={{ margin: '0 16px' }}>
+          <Content style={{ margin: '0 0px' }}>
             <div className="site-layout-background" style={{ padding: 24, minHeight: 360 }}>
               Bill is a cat.
             </div>
